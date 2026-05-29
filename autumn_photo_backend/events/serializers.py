@@ -16,8 +16,8 @@ class EventSerializer(serializers.ModelSerializer):
         write_only=True
     )
 
-    
     cover = serializers.SerializerMethodField()
+    cover_upload = serializers.ImageField(write_only=True, required=False)
 
     class Meta:
         model = Event
@@ -34,11 +34,35 @@ class EventSerializer(serializers.ModelSerializer):
             'created_at',            
             'cover_photo',
             'cover',
+            'cover_upload',
             'created_by',
             'coordinators',
             'coordinator_ids',
         ]
         read_only_fields = ['id', 'created_at', 'created_by']
+
+    def update(self, instance, validated_data):
+        cover = validated_data.pop('cover_upload', None)
+        
+        instance = super().update(instance, validated_data)
+
+        if cover is not None:
+            from photos.models import Photo
+            try:
+                user = self.context['request'].user
+                photo = Photo.objects.create(
+                    event=instance,
+                    uploader=user if user.is_authenticated else None,
+                    original_file=cover,
+                    display_file=cover,
+                    thumbnail_file=cover,
+                )
+                instance.cover_photo = photo
+                instance.save()
+            except Exception:
+                pass
+
+        return instance
 
     def get_cover(self, obj):
         photo = obj.cover_photo
