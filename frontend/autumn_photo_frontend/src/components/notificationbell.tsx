@@ -27,7 +27,13 @@ export default function NotificationBell() {
       if (p === 1) {
         setNotifications(results);
       } else {
-        setNotifications((prev) => [...prev, ...results]);
+        setNotifications((prev) => {
+          const combined = [...prev, ...results];
+          const uniqueMap = new Map(combined.map(item => [item.id, item]));
+          return Array.from(uniqueMap.values()).sort((a, b) => 
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+          );
+        });
       }
       setHasMore(data.next !== null && data.next !== undefined);
     } catch (e) {
