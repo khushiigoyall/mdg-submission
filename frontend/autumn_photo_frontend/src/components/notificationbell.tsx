@@ -17,16 +17,37 @@ interface Notification {
 export default function NotificationBell() {
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
 
- 
+  const fetchNotifications = async (p: number) => {
+    try {
+      const data = await getNotifications(p);
+      const results = data.results || data;
+      if (p === 1) {
+        setNotifications(results);
+      } else {
+        setNotifications((prev) => [...prev, ...results]);
+      }
+      setHasMore(data.next !== null && data.next !== undefined);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   useEffect(() => {
-    getNotifications().then(setNotifications);
+    fetchNotifications(1);
   }, []);
 
-  
   useNotificationSocket((data) => {
     setNotifications((prev) => [data, ...prev]);
   });
+
+  const loadMore = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchNotifications(nextPage);
+  };
 
   const unreadCount = notifications.filter((n) => !n.is_read).length;
 
@@ -74,6 +95,15 @@ export default function NotificationBell() {
               </div>
             </div>
           ))}
+
+          {hasMore && (
+            <button
+              onClick={loadMore}
+              className="w-full p-3 text-sm text-blue-400 hover:text-blue-300 hover:bg-slate-800 border-t border-slate-700 transition-colors"
+            >
+              Load More
+            </button>
+          )}
         </div>
       )}
     </div>
