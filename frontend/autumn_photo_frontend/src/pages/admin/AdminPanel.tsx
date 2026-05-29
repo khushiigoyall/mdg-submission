@@ -181,7 +181,7 @@ export default function AdminPanel() {
       if (editEndDatetime) form.append("end_datetime", editEndDatetime);
       form.append("location", editLocation);
       form.append("is_public", editIsPublic ? "true" : "false");
-      editCoordinators.forEach(id => form.append("coordinators", String(id)));
+      editCoordinators.forEach(id => form.append("coordinator_ids", String(id)));
       if (editCover) form.append('cover_upload', editCover);
       
       await axios.patch(`/events/${editingEvent.id}/`, form);
