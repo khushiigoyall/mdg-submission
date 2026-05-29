@@ -15,7 +15,7 @@ from .permissions import ISADMIN_OR_COORDINATOR
 class EventListApiView(generics.ListCreateAPIView):
     serializer_class = EventSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['name', 'slug', 'description', 'location']
+    search_fields = ['name', 'slug', 'description', 'location', 'start_datetime', 'end_datetime']
 
     def get_queryset(self):
         user = self.request.user
