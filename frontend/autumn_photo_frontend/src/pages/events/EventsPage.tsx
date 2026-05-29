@@ -146,10 +146,11 @@ export default function EventsPage() {
   };
 
   const canEditEvent = (event: Event) => {
+    if (role === "ADMIN") return true;
     if (role === "EVENT_COORDINATOR" && event.coordinators) {
       const isCoordinator = event.coordinators.some((c: any) => {
         const coordinatorEmail = typeof c === "object" ? c.email : c;
-        return coordinatorEmail === email;
+        return coordinatorEmail?.toLowerCase() === email?.toLowerCase();
       });
       return isCoordinator;
     }
