@@ -176,10 +176,15 @@ class CommentCreateAPIView(APIView):
         serializer = AddCommentSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
+        parent_comment = None
+        if "parent_comment_id" in serializer.validated_data and serializer.validated_data["parent_comment_id"]:
+            parent_comment = get_object_or_404(PhotoComment, id=serializer.validated_data["parent_comment_id"], photo_id=photo_id)
+
         comment = PhotoComment.objects.create(
             user=request.user,
             photo_id=photo_id,
             text=serializer.validated_data["text"],
+            parent_comment=parent_comment
         )
 
         photo = comment.photo
@@ -199,7 +204,8 @@ class CommentListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         return PhotoComment.objects.filter(
-            photo_id=self.kwargs["photo_id"]
+            photo_id=self.kwargs["photo_id"],
+            parent_comment__isnull=True
         ).order_by("-created_at")
 
 class MultiplePhotoUploadAPIView(APIView):

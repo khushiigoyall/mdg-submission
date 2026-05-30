@@ -42,14 +42,20 @@ class PersonTagSerializer(serializers.ModelSerializer):
 
 class PhotoCommentSerializer(serializers.ModelSerializer):
     user_name = serializers.CharField(source="user.username", read_only=True)
+    replies = serializers.SerializerMethodField()
 
     class Meta:
         model = PhotoComment
-        fields = ["id", "user_name", "text", "created_at"]
+        fields = ["id", "user_name", "text", "created_at", "replies"]
 
+    def get_replies(self, obj):
+        if obj.replies.exists():
+            return PhotoCommentSerializer(obj.replies.all().order_by('created_at'), many=True).data
+        return []
 
 class AddCommentSerializer(serializers.Serializer):
     text = serializers.CharField(max_length=500)
+    parent_comment_id = serializers.IntegerField(required=False, allow_null=True)
 
 class EventPhotoSerializer(serializers.ModelSerializer):
     likes_count = serializers.IntegerField(read_only=True)
