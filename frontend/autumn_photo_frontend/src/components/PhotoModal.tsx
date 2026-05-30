@@ -58,7 +58,10 @@ const PhotoModal: React.FC<Props> = ({ photoId, photoUrl, onClose }) => {
   useEffect(() => {
     fetchDetail();
     fetchComments();
-    const t = setInterval(fetchDetail, 3000);
+    const t = setInterval(() => {
+      fetchDetail();
+      fetchComments();
+    }, 1500);
     return () => clearInterval(t);
   }, [photoId]);
 
@@ -180,21 +183,21 @@ const PhotoModal: React.FC<Props> = ({ photoId, photoUrl, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-      <div className="bg-gray-900 text-white rounded-xl max-w-4xl w-full overflow-hidden">
-        <div className="flex items-center justify-between p-3 border-b border-gray-800">
+      <div className="bg-gray-900 text-white rounded-xl max-w-4xl w-full overflow-hidden flex flex-col max-h-[90vh]">
+        <div className="flex items-center justify-between p-3 border-b border-gray-800 shrink-0">
           <div className="font-semibold">Photo</div>
           <button onClick={onClose} className="p-1 rounded hover:bg-gray-800">
             <X />
           </button>
         </div>
 
-        <div className="flex flex-col md:flex-row">
-          <div className="md:flex-1 bg-black flex items-center justify-center">
-            <img src={detail?.original_file || photoUrl} alt="photo" className="max-h-[70vh] object-contain" />
+        <div className="flex flex-col md:flex-row overflow-hidden">
+          <div className="md:flex-1 bg-black flex items-center justify-center overflow-hidden">
+            <img src={detail?.original_file || photoUrl} alt="photo" className="max-h-full max-w-full object-contain" />
           </div>
 
-          <div className="w-full md:w-96 p-4 border-l border-gray-800">
-            <div className="flex flex-wrap items-center gap-2 mb-4">
+          <div className="w-full md:w-96 p-4 border-l border-gray-800 overflow-y-auto flex flex-col">
+            <div className="flex flex-wrap items-center gap-2 mb-4 shrink-0">
               <button onClick={toggleLike} className="flex items-center gap-2 px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
                 <Heart className="w-4 h-4" />
                 <span className="text-sm">{detail?.likes_count ?? 0}</span>
@@ -223,7 +226,7 @@ const PhotoModal: React.FC<Props> = ({ photoId, photoUrl, onClose }) => {
               </button>
             </div>
 
-            <div className="mb-4">
+            <div className="mb-4 shrink-0">
               <div className="font-medium mb-2">Tag someone</div>
               <div className="flex gap-2">
                 <input value={tagUser} onChange={(e)=>setTagUser(e.target.value)} placeholder="enter email address " className="flex-1 p-2 bg-gray-800 rounded" />
@@ -231,29 +234,62 @@ const PhotoModal: React.FC<Props> = ({ photoId, photoUrl, onClose }) => {
               </div>
             </div>
 
-            <div>
-              <div className="font-medium mb-2">Comments</div>
-              <div className="max-h-40 overflow-y-auto mb-2 space-y-2">
+            <div className="flex-1 overflow-y-auto min-h-0">
+              <div className="font-medium mb-2 sticky top-0 bg-gray-900 py-1 z-10">Comments</div>
+              <div className="space-y-3 pb-4">
                 {comments.length ? (
-                  <div className="space-y-2">
-                    {function renderComments(commentList: any[], depth = 0) {
+                  <div className="space-y-3">
+                    {function renderCommentTree(commentList: any[], depth = 0) {
                       return commentList.map(c => (
-                        <div key={c.id} className={`${depth > 0 ? 'ml-4 mt-2 border-l border-gray-700 pl-2' : 'mb-2'}`}>
-                          <div className="p-2 bg-gray-800 rounded text-sm">
-                            <div className="flex justify-between items-center mb-1">
-                              <div className="font-semibold text-xs text-indigo-300">{c.user_name}</div>
+                        <div key={c.id} className={`${depth > 0 ? 'ml-4 mt-2 border-l-2 border-gray-700 pl-3' : 'mb-3'}`}>
+                          <div className="bg-gray-800/50 p-2.5 rounded-lg text-sm">
+                            <div className="flex justify-between items-start mb-1">
+                              <div className="flex items-center gap-2">
+                                <div className="font-semibold text-xs text-indigo-300">@{c.user_name}</div>
+                                <div className="text-[10px] text-gray-500">
+                                  {new Date(c.created_at).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}
+                                </div>
+                              </div>
                               <button 
-                                onClick={() => setReplyingTo({id: c.id, userName: c.user_name})} 
+                                onClick={() => {
+                                  setReplyingTo({id: c.id, userName: c.user_name});
+                                  setNewComment("");
+                                }} 
                                 className="text-[10px] text-gray-400 hover:text-white transition-colors uppercase tracking-wider font-semibold bg-gray-700/50 px-2 py-0.5 rounded"
                               >
                                 Reply
                               </button>
                             </div>
-                            <div className="text-gray-200">{c.text}</div>
+                            <div className="text-gray-200 mt-1">{c.text}</div>
                           </div>
+                          
+                          {replyingTo?.id === c.id && (
+                            <div className="mt-2 ml-4 flex gap-2 items-center bg-gray-800/80 p-2 rounded-lg border border-gray-700">
+                              <div className="flex-1">
+                                <div className="flex justify-between items-center text-[10px] text-gray-400 mb-1 px-1">
+                                  <span>Replying to <span className="text-indigo-300 font-semibold">@{replyingTo.userName}</span></span>
+                                </div>
+                                <input 
+                                  autoFocus
+                                  value={newComment} 
+                                  onChange={(e)=>setNewComment(e.target.value)} 
+                                  placeholder="Write a reply..." 
+                                  className="w-full p-1.5 text-sm bg-gray-900 rounded border border-transparent focus:border-indigo-500 outline-none transition-colors"
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter') addComment();
+                                  }}
+                                />
+                              </div>
+                              <div className="flex flex-col gap-1 shrink-0">
+                                <button onClick={addComment} className="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 transition-colors rounded text-xs font-medium">Send</button>
+                                <button onClick={() => setReplyingTo(null)} className="px-3 py-1 bg-gray-700 hover:bg-gray-600 transition-colors rounded text-xs font-medium text-gray-300">Cancel</button>
+                              </div>
+                            </div>
+                          )}
+
                           {c.replies && c.replies.length > 0 && (
-                            <div className="replies">
-                              {renderComments(c.replies, depth + 1)}
+                            <div className="replies mt-2">
+                              {renderCommentTree(c.replies, depth + 1)}
                             </div>
                           )}
                         </div>
@@ -262,20 +298,24 @@ const PhotoModal: React.FC<Props> = ({ photoId, photoUrl, onClose }) => {
                   </div>
                 ) : <div className="text-gray-400 text-sm">No comments yet</div>}
               </div>
+            </div>
 
-              {replyingTo && (
-                <div className="flex justify-between items-center text-xs text-gray-400 mb-2 px-2 py-1 bg-gray-800 rounded border border-gray-700">
-                  <span>Replying to <span className="text-indigo-300 font-semibold">@{replyingTo.userName}</span></span>
-                  <button onClick={() => setReplyingTo(null)} className="hover:text-white">
-                    <X className="w-3 h-3" />
-                  </button>
-                </div>
-              )}
-              <div className="flex gap-2">
-                <input value={newComment} onChange={(e)=>setNewComment(e.target.value)} placeholder={replyingTo ? "Write a reply..." : "Add a comment..."} className="flex-1 p-2 bg-gray-800 rounded border border-transparent focus:border-indigo-500 outline-none transition-colors" />
+            {/* Root Comment Input */}
+            {!replyingTo && (
+              <div className="flex gap-2 mt-4 pt-3 border-t border-gray-800 shrink-0">
+                <input 
+                  value={newComment} 
+                  onChange={(e)=>setNewComment(e.target.value)} 
+                  placeholder="Add a comment..." 
+                  className="flex-1 p-2 bg-gray-800 rounded border border-transparent focus:border-indigo-500 outline-none transition-colors"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') addComment();
+                  }}
+                />
                 <button onClick={addComment} className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 transition-colors rounded font-medium">Send</button>
               </div>
-            </div>
+            )}
+
             {detail?.person_tags?.length > 0 && (
   <div className="mb-4">
     <div className="font-medium mb-1">Tagged</div>
