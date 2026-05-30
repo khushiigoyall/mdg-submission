@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "../services/axiosinstances";
 import { Heart, Star, Download, Share2, X } from "lucide-react";
+import { usePhotoCommentSocket } from "../utils/usePhotoCommentSocket";
 
 interface Props {
   photoId: number;
@@ -60,6 +61,29 @@ const PhotoModal: React.FC<Props> = ({ photoId, photoUrl, onClose }) => {
     const t = setInterval(fetchDetail, 3000);
     return () => clearInterval(t);
   }, [photoId]);
+
+  usePhotoCommentSocket(photoId, (newComment) => {
+    setComments((prevComments) => {
+      if (!newComment.parent_comment_id) {
+        if (prevComments.some(c => c.id === newComment.id)) return prevComments;
+        return [newComment, ...prevComments];
+      }
+
+      const addReplyRecursively = (list: any[]): any[] => {
+        return list.map(c => {
+          if (c.id === newComment.parent_comment_id) {
+            const replies = c.replies || [];
+            if (replies.some((r: any) => r.id === newComment.id)) return c;
+            return { ...c, replies: [...replies, newComment] };
+          } else if (c.replies && c.replies.length > 0) {
+            return { ...c, replies: addReplyRecursively(c.replies) };
+          }
+          return c;
+        });
+      };
+      return addReplyRecursively(prevComments);
+    });
+  });
 
   const toggleLike = async () => {
     try {
