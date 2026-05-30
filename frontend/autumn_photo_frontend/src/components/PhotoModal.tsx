@@ -22,6 +22,7 @@ const PhotoModal: React.FC<Props> = ({ photoId, photoUrl, onClose }) => {
   const [detail, setDetail] = useState<PhotoDetail | null>(null);
   const [comments, setComments] = useState<any[]>([]);
   const [newComment, setNewComment] = useState("");
+  const [replyingTo, setReplyingTo] = useState<{id: number, userName: string} | null>(null);
   const [liked, setLiked] = useState(false);
   const [favourited, setFavourited] = useState(false);
   const [tagUser, setTagUser] = useState("");
@@ -83,8 +84,12 @@ const PhotoModal: React.FC<Props> = ({ photoId, photoUrl, onClose }) => {
   const addComment = async () => {
     if (!newComment.trim()) return;
     try {
-      await axios.post(`/photos/${photoId}/comments/add/`, { text: newComment });
+      await axios.post(`/photos/${photoId}/comments/add/`, { 
+        text: newComment,
+        parent_comment_id: replyingTo?.id || null 
+      });
       setNewComment("");
+      setReplyingTo(null);
       fetchComments();
       fetchDetail();
     } catch (e) {
@@ -206,17 +211,46 @@ const PhotoModal: React.FC<Props> = ({ photoId, photoUrl, onClose }) => {
             <div>
               <div className="font-medium mb-2">Comments</div>
               <div className="max-h-40 overflow-y-auto mb-2 space-y-2">
-                {comments.length ? comments.map((c)=> (
-                  <div key={c.id} className="p-2 bg-gray-800 rounded text-sm">
-                    <div className="font-semibold text-xs">{c.user_name}</div>
-                    <div>{c.text}</div>
+                {comments.length ? (
+                  <div className="space-y-2">
+                    {function renderComments(commentList: any[], depth = 0) {
+                      return commentList.map(c => (
+                        <div key={c.id} className={`${depth > 0 ? 'ml-4 mt-2 border-l border-gray-700 pl-2' : 'mb-2'}`}>
+                          <div className="p-2 bg-gray-800 rounded text-sm">
+                            <div className="flex justify-between items-center mb-1">
+                              <div className="font-semibold text-xs text-indigo-300">{c.user_name}</div>
+                              <button 
+                                onClick={() => setReplyingTo({id: c.id, userName: c.user_name})} 
+                                className="text-[10px] text-gray-400 hover:text-white transition-colors uppercase tracking-wider font-semibold bg-gray-700/50 px-2 py-0.5 rounded"
+                              >
+                                Reply
+                              </button>
+                            </div>
+                            <div className="text-gray-200">{c.text}</div>
+                          </div>
+                          {c.replies && c.replies.length > 0 && (
+                            <div className="replies">
+                              {renderComments(c.replies, depth + 1)}
+                            </div>
+                          )}
+                        </div>
+                      ));
+                    }(comments)}
                   </div>
-                )) : <div className="text-gray-400 text-sm">No comments yet</div>}
+                ) : <div className="text-gray-400 text-sm">No comments yet</div>}
               </div>
 
+              {replyingTo && (
+                <div className="flex justify-between items-center text-xs text-gray-400 mb-2 px-2 py-1 bg-gray-800 rounded border border-gray-700">
+                  <span>Replying to <span className="text-indigo-300 font-semibold">@{replyingTo.userName}</span></span>
+                  <button onClick={() => setReplyingTo(null)} className="hover:text-white">
+                    <X className="w-3 h-3" />
+                  </button>
+                </div>
+              )}
               <div className="flex gap-2">
-                <input value={newComment} onChange={(e)=>setNewComment(e.target.value)} placeholder="Add a comment" className="flex-1 p-2 bg-gray-800 rounded" />
-                <button onClick={addComment} className="px-3 py-2 bg-black-600 rounded">Send</button>
+                <input value={newComment} onChange={(e)=>setNewComment(e.target.value)} placeholder={replyingTo ? "Write a reply..." : "Add a comment..."} className="flex-1 p-2 bg-gray-800 rounded border border-transparent focus:border-indigo-500 outline-none transition-colors" />
+                <button onClick={addComment} className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 transition-colors rounded font-medium">Send</button>
               </div>
             </div>
             {detail?.person_tags?.length > 0 && (
