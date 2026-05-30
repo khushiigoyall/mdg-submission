@@ -48,7 +48,7 @@ const PhotoModal: React.FC<Props> = ({ photoId, photoUrl, onClose }) => {
 
   const fetchComments = async () => {
     try {
-      const res = await axios.get(`/photos/${photoId}/comments/`);
+      const res = await axios.get(`/photos/${photoId}/comments/?t=${new Date().getTime()}`);
       setComments(res.data || []);
     } catch (e) {
       console.error(e);
@@ -117,6 +117,7 @@ const PhotoModal: React.FC<Props> = ({ photoId, photoUrl, onClose }) => {
       });
       setNewComment("");
       setReplyingTo(null);
+      fetchComments();
       fetchDetail();
     } catch (e) {
       console.error(e);
