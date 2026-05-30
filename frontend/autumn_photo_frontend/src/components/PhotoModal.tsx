@@ -114,7 +114,6 @@ const PhotoModal: React.FC<Props> = ({ photoId, photoUrl, onClose }) => {
       });
       setNewComment("");
       setReplyingTo(null);
-      fetchComments();
       fetchDetail();
     } catch (e) {
       console.error(e);
