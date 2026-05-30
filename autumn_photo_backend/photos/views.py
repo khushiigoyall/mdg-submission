@@ -197,6 +197,22 @@ class CommentCreateAPIView(APIView):
                 "photo_id": photo.id,
             })
 
+        from asgiref.sync import async_to_sync
+        from channels.layers import get_channel_layer
+        channel_layer = get_channel_layer()
+        serialized_comment = PhotoCommentSerializer(comment).data
+        # Initialize an empty replies array for a new comment to avoid frontend errors
+        serialized_comment["replies"] = []
+        serialized_comment["parent_comment_id"] = comment.parent_comment_id
+
+        async_to_sync(channel_layer.group_send)(
+            f"photo_{photo.id}",
+            {
+                "type": "send_comment",
+                "data": serialized_comment
+            }
+        )
+
         return Response({"message": "Comment added"})
 
 class CommentListAPIView(generics.ListAPIView):
