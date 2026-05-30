@@ -42,11 +42,13 @@ class PersonTagSerializer(serializers.ModelSerializer):
 
 class PhotoCommentSerializer(serializers.ModelSerializer):
     user_name = serializers.CharField(source="user.username", read_only=True)
+    user_id = serializers.IntegerField(source="user.id", read_only=True)
     replies = serializers.SerializerMethodField()
+    parent_comment = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = PhotoComment
-        fields = ["id", "user_name", "text", "created_at", "replies"]
+        fields = ["id", "user_id", "user_name", "text", "created_at", "replies", "parent_comment"]
 
     def get_replies(self, obj):
         if obj.replies.exists():

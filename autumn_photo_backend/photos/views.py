@@ -188,12 +188,23 @@ class CommentCreateAPIView(APIView):
         )
 
         photo = comment.photo
-        if photo.uploader_id != request.user.id:
+        # Notify photo uploader for top-level comments
+        if not parent_comment and photo.uploader_id != request.user.id:
             create_notification.delay({
                 "recipient": photo.uploader_id,
                 "actor": request.user.id,
                 "notification_type": "comment",
                 "message": f"{request.user.email} commented on your photo",
+                "photo_id": photo.id,
+            })
+            
+        # Notify parent comment author for replies
+        if parent_comment and parent_comment.user_id != request.user.id:
+            create_notification.delay({
+                "recipient": parent_comment.user_id,
+                "actor": request.user.id,
+                "notification_type": "comment",
+                "message": f"{request.user.email} replied to your comment",
                 "photo_id": photo.id,
             })
 
