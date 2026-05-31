@@ -199,54 +199,51 @@ export default function EventsPage() {
         {!selectedEvent && searchMode === "events" && (
           <div>
             {events.length > 0 ? (
-              <div className="grid gap-[12px] md:grid-cols-[1.4fr_1fr_1fr] md:grid-rows-[auto_auto]">
-                {events.map((ev, idx) => {
-                  const isFeatured = idx === 0;
-                  return (
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {events.map((ev) => (
                   <div
                     key={ev.id}
                     onClick={() => handleSelectEvent(ev)}
-                    className={`group cursor-pointer rounded-[7px] border border-white/[0.06] bg-[#1a1917] hover:bg-[#232220] transition-all duration-300 overflow-hidden hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(201,169,110,0.12)] flex flex-col ${isFeatured ? 'md:row-span-2 md:col-span-1' : ''}`}
+                    className="group cursor-pointer rounded-2xl border border-white/[0.06] bg-[#1a1917] hover:bg-[#232220] transition-all duration-300 overflow-hidden hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(201,169,110,0.12)] flex flex-col"
                   >
-                    <div className={`relative overflow-hidden shrink-0 bg-[#111010] ${isFeatured ? 'h-[140px]' : 'h-[80px]'}`}>
+                    <div className="relative overflow-hidden h-56 shrink-0 bg-[#111010]">
                       <img
                         src={getMediaUrl(ev.cover) || "/placeholder_event.jpg"}
                         alt={ev.name}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-b from-black/[0.15] to-transparent pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80" />
                       
-                      <div className="absolute top-2 left-2 flex items-center gap-1 bg-white/[0.08] backdrop-blur-sm px-2 py-1 rounded-md text-[10px] font-medium text-white border border-white/[0.05]">
-                        <Users className="w-3 h-3" />
+                      <div className="absolute top-3 right-3 flex items-center gap-1.5 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-medium text-white">
+                        <Users className="w-3.5 h-3.5" />
                         <span>{ev.coordinators?.length || 0}</span>
                       </div>
                       
-                      <div className="absolute top-2 right-2 flex items-center gap-1 bg-[#c9a96e]/[0.15] backdrop-blur-sm px-2 py-1 rounded-md text-[10px] font-medium text-[#c9a96e] border border-[#c9a96e]/20">
-                        <span className="text-[8px]">●</span>
+                      <div className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-white/[0.1] backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-medium text-[#e8e3dc]">
+                        <Calendar className="w-3.5 h-3.5" />
                         <span>Upcoming</span>
                       </div>
                     </div>
 
-                    <div className="p-[10px_14px_12px] flex flex-col flex-grow">
-                      <div className="w-[16px] h-[2px] bg-[#c9a96e] mb-2"></div>
-                      <h2 className={`${isFeatured ? 'text-[14px]' : 'text-[13px]'} font-medium mb-1 text-[#e8e3dc] group-hover:text-[#c9a96e] transition-colors line-clamp-1`}>
+                    <div className="p-5 flex flex-col flex-grow">
+                      <h2 className="text-xl font-bold mb-1 text-[#e8e3dc] group-hover:text-[#c9a96e] transition-colors line-clamp-1">
                         {ev.name}
                       </h2>
-                      <p className="text-[#7a7570] text-[12px] line-clamp-2 leading-relaxed mb-3 flex-grow">
+                      <p className="text-[#7a7570] text-sm line-clamp-2 leading-relaxed mb-4 flex-grow">
                         {ev.description}
                       </p>
                       
-                      <div className="mt-auto flex items-center justify-between border-t border-white/[0.05] pt-2">
-                        <div className="flex items-center text-[11px] text-[#c9a96e] font-medium">
+                      <div className="mt-auto flex items-center justify-between">
+                        <div className="flex items-center text-sm text-[#e8e3dc] font-bold">
                           <span>View photos</span>
-                          <svg className="w-3 h-3 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                          <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                           </svg>
                         </div>
                         {canEditEvent(ev) && (
                           <button
                             onClick={(e) => openEditModal(ev, e)}
-                            className="px-2 py-1 border border-white/[0.15] text-[#7a7570] hover:text-[#c9a96e] hover:border-[#c9a96e] rounded text-[10px] font-medium transition-colors"
+                            className="px-3 py-1.5 border border-white/[0.15] text-[#7a7570] hover:text-[#c9a96e] hover:border-[#c9a96e] rounded-md text-xs font-medium transition-colors"
                           >
                             Edit
                           </button>
@@ -254,7 +251,7 @@ export default function EventsPage() {
                       </div>
                     </div>
                   </div>
-                )})}
+                ))}
               </div>
             ) : (
               <div className="text-center py-20 border border-white/[0.05] rounded-lg bg-[#1a1917]">
