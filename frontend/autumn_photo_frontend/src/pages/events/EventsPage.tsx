@@ -268,8 +268,6 @@ export default function EventsPage() {
        
         {(selectedEvent || searchMode === "photos") && (
           <div className="animate-fadeIn">
-        {(selectedEvent || searchMode === "photos") && (
-          <div className="animate-fadeIn">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 p-6 rounded-lg bg-[#1a1917] border border-white/[0.05] backdrop-blur-sm">
               <div>
                 <button
