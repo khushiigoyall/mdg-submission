@@ -199,14 +199,14 @@ export default function EventsPage() {
         {!selectedEvent && searchMode === "events" && (
           <div>
             {events.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[20px] [&>div:first-child]:md:col-span-2 [&>div:first-child]:lg:col-span-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[24px]">
                 {events.map((ev) => (
                   <div
                     key={ev.id}
                     onClick={() => handleSelectEvent(ev)}
-                    className="group cursor-pointer rounded-lg border border-white/[0.06] bg-[#1a1917] hover:bg-[#232220] transition-all duration-300 overflow-hidden hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(201,169,110,0.12)] flex flex-col"
+                    className="group cursor-pointer rounded-xl border border-white/[0.06] bg-[#1a1917] hover:bg-[#232220] transition-all duration-300 overflow-hidden hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(201,169,110,0.12)] flex flex-col"
                   >
-                    <div className="relative overflow-hidden h-56 shrink-0 bg-[#111010]">
+                    <div className="relative overflow-hidden h-64 shrink-0 bg-[#111010]">
                       <img
                         src={getMediaUrl(ev.cover) || "/placeholder_event.jpg"}
                         alt={ev.name}
