@@ -37,41 +37,41 @@ export default function Navbar() {
   const roleVal = (role || '').toString().trim().toUpperCase();
 
   return (
-    <nav className="w-full bg-[#0e0d0c]/90 border-b border-white/[0.07] backdrop-blur-[8px] sticky top-0 z-50 text-[#e8e3dc] p-4 flex items-center justify-between font-sans">
+    <nav className="w-full bg-[#0e0d0c] border-b border-white/[0.07] backdrop-blur-[8px] text-white p-3 flex items-center justify-between">
       <div className="flex items-center gap-4">
-        <Link to="/events" className="text-2xl font-normal text-[#e8e3dc]" style={{ fontFamily: "'DM Serif Display', serif" }}>Events</Link>
+        <Link to="/events" className="text-xl text-[#e8e3dc] font-normal" style={{ fontFamily: "'DM Serif Display', serif" }}>Events</Link>
       </div>
 
-      <div className="flex items-center gap-5">
+      <div className="flex items-center gap-3">
         {isAuth && (
           <>
             {/* 🔔 Notifications */}
             <NotificationBell />
 
             {roleVal === 'ADMIN' && (
-              <Link to="/admin" className="text-[#7a7570] hover:text-[#c9a96e] transition-colors font-medium">
+              <Link to="/admin" className="text-[#7a7570] hover:text-[#c9a96e] transition-colors">
                 Admin
               </Link>
             )}
 
             {roleVal === 'PHOTOGRAPHER' && (
-              <Link to="/photographer" className="text-[#7a7570] hover:text-[#c9a96e] transition-colors font-medium">
+              <Link to="/photographer" className="text-[#7a7570] hover:text-[#c9a96e] transition-colors">
                 Photographer Dashboard
               </Link>
             )}
 
-            <Link to="/profile" className="text-[#7a7570] hover:text-[#c9a96e] transition-colors font-medium">
+            <Link to="/profile" className="text-[#7a7570] hover:text-[#c9a96e] transition-colors">
               Profile
             </Link>
 
-            <button onClick={logout} className="px-4 py-1.5 border border-white/[0.15] text-[#e8e3dc] hover:border-[#c9a96e] hover:text-[#c9a96e] transition-colors rounded-md text-sm font-medium">
+            <button onClick={logout} className="px-[14px] py-[4px] border border-white/[0.15] bg-transparent text-[#e8e3dc] rounded-[5px] hover:text-[#c9a96e] hover:border-[#c9a96e] transition-colors">
               Logout
             </button>
           </>
         )}
 
         {!isAuth && (
-          <Link to="/login" className="px-4 py-1.5 bg-[#c9a96e] text-[#111010] hover:bg-[#b0935d] transition-colors rounded-md text-sm font-medium">
+          <Link to="/login" className="px-3 py-1 bg-[#c9a96e] text-[#111010] rounded">
             Login
           </Link>
         )}
