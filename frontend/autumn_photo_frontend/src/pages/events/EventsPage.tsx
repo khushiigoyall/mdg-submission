@@ -190,7 +190,7 @@ export default function EventsPage() {
             />
             <button
               onClick={() => handleSearch(search)}
-              className="absolute right-2 top-1/2 -translate-y-1/2 px-6 py-2.5 rounded-[6px] bg-[#c9a96e] text-[#111010] font-semibold transition-colors duration-200"
+              className="absolute right-2 top-1/2 -translate-y-1/2 px-6 py-2.5 rounded-[6px] !bg-[#c9a96e] !text-[#111010] font-semibold hover:!bg-[#b0935d] transition-colors duration-200"
             >
               Search
             </button>
