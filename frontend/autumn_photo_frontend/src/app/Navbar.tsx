@@ -37,46 +37,52 @@ export default function Navbar() {
   const roleVal = (role || '').toString().trim().toUpperCase();
 
   return (
-    <nav className="w-full bg-[#0e0d0c] border-b border-white/[0.07] backdrop-blur-[8px] text-white p-3 flex items-center justify-between">
-      <div className="flex items-center gap-4">
-        <Link to="/events" className="text-xl text-[#e8e3dc] font-normal" style={{ fontFamily: "'DM Serif Display', serif" }}>Events</Link>
-      </div>
+    <div className="w-full bg-[#111010] pt-4 px-4 md:px-8">
+      <nav className="w-full max-w-7xl mx-auto bg-[#0e0d0c] border-b border-white/[0.07] backdrop-blur-[8px] text-white px-6 py-4 flex items-center justify-between rounded-t-[16px]">
+        <div className="flex items-center gap-4">
+          <Link to="/events" className="text-2xl text-[#e8e3dc] font-bold tracking-tight" style={{ fontFamily: "'DM Serif Display', serif" }}>Events</Link>
+        </div>
 
-      <div className="flex items-center gap-3">
-        {isAuth && (
-          <>
-            {/* 🔔 Notifications */}
-            <NotificationBell />
+        <div className="flex items-center gap-6">
+          {isAuth && (
+            <>
+              {/* 🔔 Notifications */}
+              <NotificationBell />
 
-            {roleVal === 'ADMIN' && (
-              <Link to="/admin" className="text-[#7a7570] hover:text-[#c9a96e] transition-colors">
-                Admin
+              {roleVal === 'ADMIN' && (
+                <Link to="/admin" className="text-[#c9a96e] hover:text-[#e8e3dc] text-[15px] font-medium transition-colors">
+                  Admin
+                </Link>
+              )}
+
+              {roleVal === 'PHOTOGRAPHER' && (
+                <Link to="/photographer" className="text-[#c9a96e] hover:text-[#e8e3dc] text-[15px] font-medium transition-colors">
+                  Photographer Dashboard
+                </Link>
+              )}
+
+              <Link to="/profile" className="text-[#c9a96e] hover:text-[#e8e3dc] text-[15px] font-medium transition-colors">
+                Profile
               </Link>
-            )}
 
-            {roleVal === 'PHOTOGRAPHER' && (
-              <Link to="/photographer" className="text-[#7a7570] hover:text-[#c9a96e] transition-colors">
-                Photographer Dashboard
-              </Link>
-            )}
+              <div className="flex items-center gap-2">
+                <button onClick={logout} className="px-4 py-1.5 border border-white/[0.15] bg-transparent text-[#e8e3dc] text-[14px] font-medium rounded-md hover:text-[#c9a96e] hover:border-[#c9a96e] transition-colors">
+                  Logout
+                </button>
+                <button className="p-2 bg-[#232220] hover:bg-white/[0.1] text-[#e8e3dc] rounded-md transition-colors flex items-center justify-center">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                </button>
+              </div>
+            </>
+          )}
 
-            <Link to="/profile" className="text-[#7a7570] hover:text-[#c9a96e] transition-colors">
-              Profile
+          {!isAuth && (
+            <Link to="/login" className="px-4 py-1.5 bg-[#c9a96e] text-[#111010] text-[14px] font-semibold rounded-md">
+              Login
             </Link>
-
-            <button onClick={logout} className="px-[14px] py-[4px] border border-white/[0.15] bg-transparent text-[#e8e3dc] rounded-[5px] hover:text-[#c9a96e] hover:border-[#c9a96e] transition-colors">
-              Logout
-            </button>
-          </>
-        )}
-
-        {!isAuth && (
-          <Link to="/login" className="px-3 py-1 bg-[#c9a96e] text-[#111010] rounded">
-            Login
-          </Link>
-        )}
-      </div>
-
-    </nav>
+          )}
+        </div>
+      </nav>
+    </div>
   );
 }
