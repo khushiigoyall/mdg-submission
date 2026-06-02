@@ -75,123 +75,117 @@ export default function MultipleUploadPage() {
   
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-white">
-      
+    <div className="w-full">
+      {/* Event selector */}
+      <div className="mb-6">
+        <label className="block mb-2 text-sm text-[#7a7570] font-medium">
+          Select Event
+        </label>
+        <select
+          className="w-full px-4 py-3 rounded-xl bg-[#1a1917] border border-white/[0.06] text-[#e8e3dc] focus:border-[#c9a96e] outline-none transition-colors"
+          value={selectedEvent ?? ""}
+          onChange={(e) => setSelectedEvent(Number(e.target.value))}
+        >
+          <option value="">Choose an event…</option>
+          {events.map((ev) => (
+            <option key={ev.id} value={ev.id}>
+              {ev.name}
+            </option>
+          ))}
+        </select>
+      </div>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-10 py-8">
-        <h1 className="text-3xl font-bold mb-6">Upload Photos</h1>
+      {/* Drop zone */}
+      <div
+        onDragOver={(e) => {
+          e.preventDefault();
+          setDragOver(true);
+        }}
+        onDragLeave={() => setDragOver(false)}
+        onDrop={onDrop}
+        className={`p-12 rounded-2xl border-2 border-dashed mb-6 transition-all duration-300 ${
+          dragOver
+            ? "border-[#c9a96e] bg-[#c9a96e]/10"
+            : "border-white/[0.1] bg-[#1a1917] hover:border-white/[0.2]"
+        }`}
+      >
+        <div className="text-center">
+          <Upload className={`mx-auto mb-4 w-10 h-10 ${dragOver ? "text-[#c9a96e]" : "text-[#7a7570]"}`} />
+          <p className="text-[#e8e3dc] font-medium">Drag & drop photos here</p>
+          <p className="text-[#7a7570] text-sm mb-4">or</p>
 
-        {/* Event selector */}
-        <div className="mb-6">
-          <label className="block mb-2 text-sm text-gray-300">
-            Select Event
+          <label className="cursor-pointer inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#c9a96e] text-[#111010] font-semibold hover:bg-[#b0935d] transition-colors">
+            <Image className="w-5 h-5" />
+            Browse Files
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              className="hidden"
+              onChange={onFileChange}
+            />
           </label>
-          <select
-            className="w-full px-4 py-3 rounded-xl bg-gray-800 border border-gray-700"
-            value={selectedEvent ?? ""}
-            onChange={(e) => setSelectedEvent(Number(e.target.value))}
-          >
-            <option value="">Choose an event…</option>
-            {events.map((ev) => (
-              <option key={ev.id} value={ev.id}>
-                {ev.name}
-              </option>
-            ))}
-          </select>
         </div>
+      </div>
 
-        {/* Drop zone */}
+      {/* Message */}
+      {message && (
         <div
-          onDragOver={(e) => {
-            e.preventDefault();
-            setDragOver(true);
-          }}
-          onDragLeave={() => setDragOver(false)}
-          onDrop={onDrop}
-          className={`p-12 rounded-2xl border-2 border-dashed mb-6 transition ${
-            dragOver
-              ? "border-purple-500 bg-purple-500/10"
-              : "border-gray-700 bg-gray-900/40"
+          className={`flex items-center gap-2 mb-6 p-4 rounded-xl font-medium ${
+            message.includes("Uploaded")
+              ? "bg-green-500/10 text-green-400 border border-green-500/20"
+              : "bg-red-500/10 text-red-400 border border-red-500/20"
           }`}
         >
-          <div className="text-center">
-            <Upload className="mx-auto mb-4 w-10 h-10 text-gray-400" />
-            <p className="text-gray-300">Drag & drop photos here</p>
-            <p className="text-gray-500 text-sm mb-4">or</p>
-
-            <label className="cursor-pointer inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-purple-600 hover:bg-purple-700">
-              <Image className="w-5 h-5" />
-              Browse Files
-              <input
-                type="file"
-                multiple
-                accept="image/*"
-                className="hidden"
-                onChange={onFileChange}
-              />
-            </label>
-          </div>
+          {message.includes("Uploaded") ? (
+            <CheckCircle className="w-5 h-5" />
+          ) : (
+            <AlertCircle className="w-5 h-5" />
+          )}
+          <span>{message}</span>
         </div>
+      )}
 
-        {/* Message */}
-        {message && (
-          <div
-            className={`flex items-center gap-2 mb-6 p-4 rounded-xl ${
-              message.includes("Uploaded")
-                ? "bg-green-500/10 text-green-400"
-                : "bg-yellow-500/10 text-yellow-400"
-            }`}
-          >
-            {message.includes("Uploaded") ? (
-              <CheckCircle className="w-5 h-5" />
-            ) : (
-              <AlertCircle className="w-5 h-5" />
-            )}
-            <span>{message}</span>
-          </div>
-        )}
-
-        {/* File list */}
-        {files.length > 0 && (
-          <div className="grid md:grid-cols-2 gap-4 mb-6">
-            {files.map((file, i) => (
-              <div
-                key={i}
-                className="flex items-center gap-4 p-3 rounded-xl bg-gray-800"
-              >
-                <img
-                  src={URL.createObjectURL(file)}
-                  alt={file.name}
-                  className="w-20 h-20 object-cover rounded"
-                />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm truncate">{file.name}</p>
-                  <p className="text-xs text-gray-400">
-                    {(file.size / 1024).toFixed(1)} KB
-                  </p>
-                </div>
-                <button
-                  onClick={() => removeFile(i)}
-                  className="text-gray-400 hover:text-red-400"
-                >
-                  <X />
-                </button>
+      {/* File list */}
+      {files.length > 0 && (
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          {files.map((file, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-4 p-3 rounded-xl bg-[#1a1917] border border-white/[0.06]"
+            >
+              <img
+                src={URL.createObjectURL(file)}
+                alt={file.name}
+                className="w-16 h-16 object-cover rounded-lg"
+              />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-[#e8e3dc] truncate">{file.name}</p>
+                <p className="text-xs text-[#7a7570]">
+                  {(file.size / 1024).toFixed(1)} KB
+                </p>
               </div>
-            ))}
-          </div>
-        )}
+              <button
+                onClick={() => removeFile(i)}
+                className="text-[#7a7570] hover:text-[#c9a96e] p-2 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
 
-        {/* Upload button */}
-        <button
-          onClick={handleUpload}
-          disabled={uploading || !selectedEvent || files.length === 0}
-          className="w-full py-4 rounded-xl bg-purple-600 hover:bg-purple-700 disabled:bg-gray-700 disabled:cursor-not-allowed"
-        >
-          {uploading
-            ? "Uploading…"
-            : `Upload ${files.length || ""} Photos`}
-        </button>
-      </div>
+      {/* Upload button */}
+      <button
+        onClick={handleUpload}
+        disabled={uploading || !selectedEvent || files.length === 0}
+        className="w-full py-4 rounded-xl bg-[#c9a96e] text-[#111010] font-bold text-lg hover:bg-[#b0935d] transition-colors disabled:bg-[#1a1917] disabled:text-[#7a7570] disabled:cursor-not-allowed border disabled:border-white/[0.06] disabled:border border-transparent"
+      >
+        {uploading
+          ? "Uploading..."
+          : `Upload ${files.length || ""} Photos`}
+      </button>
     </div>
   );
 }
