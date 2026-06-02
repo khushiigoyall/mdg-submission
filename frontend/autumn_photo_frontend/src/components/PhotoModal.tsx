@@ -27,6 +27,8 @@ const PhotoModal: React.FC<Props> = ({ photoId, photoUrl, onClose }) => {
   const [liked, setLiked] = useState(false);
   const [favourited, setFavourited] = useState(false);
   const [tagUser, setTagUser] = useState("");
+  const [suggestedUsers, setSuggestedUsers] = useState<any[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const [copied, setCopied] = useState(false);
   const [downloading, setDownloading] = useState(false);
   
@@ -137,6 +139,22 @@ const PhotoModal: React.FC<Props> = ({ photoId, photoUrl, onClose }) => {
   }
 };
 
+const handleTagChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const val = e.target.value;
+  setTagUser(val);
+  if (val.length > 1) {
+    try {
+      const res = await axios.get(`/accounts/search/?q=${encodeURIComponent(val)}`);
+      setSuggestedUsers(res.data);
+      setShowSuggestions(true);
+    } catch (e) {
+      console.error(e);
+    }
+  } else {
+    setSuggestedUsers([]);
+    setShowSuggestions(false);
+  }
+};
 
 
   const downloadOriginal = async () => {
@@ -227,12 +245,36 @@ const PhotoModal: React.FC<Props> = ({ photoId, photoUrl, onClose }) => {
               </button>
             </div>
 
-            <div className="mb-4 shrink-0">
+            <div className="mb-4 shrink-0 relative">
               <div className="font-medium mb-2">Tag someone</div>
               <div className="flex gap-2">
-                <input value={tagUser} onChange={(e)=>setTagUser(e.target.value)} placeholder="enter email address " className="flex-1 p-2 bg-gray-800 rounded" />
-                <button onClick={tagPerson} className="px-3 py-2 bg-black-600 rounded">Tag</button>
+                <input 
+                  value={tagUser} 
+                  onChange={handleTagChange} 
+                  onFocus={() => suggestedUsers.length > 0 && setShowSuggestions(true)} 
+                  onBlur={() => setTimeout(() => setShowSuggestions(false), 200)} 
+                  placeholder="enter email address or name" 
+                  className="flex-1 p-2 bg-gray-800 rounded outline-none focus:border-[#c9a96e] focus:ring-1 focus:ring-[#c9a96e] transition-all" 
+                />
+                <button onClick={tagPerson} className="px-3 py-2 bg-[#c9a96e] text-[#111010] font-semibold hover:bg-[#b0935d] transition-colors rounded">Tag</button>
               </div>
+              {showSuggestions && suggestedUsers.length > 0 && (
+                <div className="absolute top-full left-0 mt-1 w-full z-20 bg-gray-800 border border-gray-700 rounded-md shadow-lg max-h-40 overflow-y-auto custom-scrollbar">
+                  {suggestedUsers.map(u => (
+                    <div 
+                      key={u.id} 
+                      className="p-2 hover:bg-gray-700 cursor-pointer text-sm border-b border-gray-700/50 last:border-0 transition-colors"
+                      onClick={() => {
+                        setTagUser(u.email);
+                        setShowSuggestions(false);
+                      }}
+                    >
+                      <div className="font-medium text-white">{u.full_name}</div>
+                      <div className="text-gray-400 text-xs">{u.email}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="flex-1 overflow-y-auto min-h-0">

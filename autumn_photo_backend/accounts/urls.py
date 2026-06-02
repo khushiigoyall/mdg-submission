@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RegisterAPIView, VerifyOTPAPIView, LoginAPIView, OmniportLoginAPIView, OmniportCallbackAPIView, ProfileAPIView, OmniportSessionAPIView
+from .views import RegisterAPIView, VerifyOTPAPIView, LoginAPIView, OmniportLoginAPIView, OmniportCallbackAPIView, ProfileAPIView, OmniportSessionAPIView, UserSearchAPIView
 
 
 urlpatterns = [
@@ -10,5 +10,5 @@ urlpatterns = [
     path("omniport/callback/", OmniportCallbackAPIView.as_view()),
     path("me/", ProfileAPIView.as_view()),
     path("omniport/session/", OmniportSessionAPIView.as_view()),
-
+    path("search/", UserSearchAPIView.as_view()),
 ]

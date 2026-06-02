@@ -178,3 +178,18 @@ class OmniportSessionAPIView(APIView):
             "role": request.session["role"],
         })
 
+from django.db.models import Q
+
+class UserSearchAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        query = request.GET.get("q", "").strip()
+        if not query or len(query) < 2:
+            return Response([])
+
+        users = User.objects.filter(
+            Q(email__icontains=query) | Q(full_name__icontains=query)
+        ).values("id", "email", "full_name")[:10]
+
+        return Response(list(users))
