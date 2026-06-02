@@ -330,7 +330,7 @@ export default function AdminPanel() {
                 </label>
               </div>
               
-              <button type="submit" disabled={loading} className="px-8 py-3 bg-[#c9a96e] text-[#111010] rounded-lg font-bold hover:bg-[#b0935d] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+              <button type="submit" disabled={loading} style={{ backgroundColor: '#c9a96e', color: '#111010' }} className="px-8 py-3 rounded-lg font-bold hover:brightness-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                 {loading ? 'Creating...' : 'Create Event'}
               </button>
             </div>
@@ -400,19 +400,19 @@ export default function AdminPanel() {
                   <div className="flex items-center gap-6">
                     <div className="flex items-center gap-4">
                       <label className="block text-sm font-medium text-[#7a7570]">Cover Photo</label>
-                      <input type="file" accept="image/*" onChange={e=>setEditCover(e.target.files?.[0] || null)} className="text-sm text-[#e8e3dc] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#1a1917] file:text-blue-400 file:border file:border-white/[0.06] hover:file:bg-[#2a2927] hover:file:cursor-pointer transition-all" />
+                      <input type="file" accept="image/*" onChange={e=>setEditCover(e.target.files?.[0] || null)} className="text-sm text-[#e8e3dc] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#1a1917] file:text-[#c9a96e] file:border file:border-white/[0.06] hover:file:bg-[#2a2927] hover:file:cursor-pointer transition-all" />
                     </div>
                     <label className="flex items-center gap-2 cursor-pointer">
-                      <input type="checkbox" checked={editIsPublic} onChange={e=>setEditIsPublic(e.target.checked)} className="w-4 h-4 rounded bg-[#111010] border-white/[0.06] text-blue-400 focus:ring-blue-400" /> 
+                      <input type="checkbox" checked={editIsPublic} onChange={e=>setEditIsPublic(e.target.checked)} className="w-4 h-4 rounded bg-[#111010] border-white/[0.06] text-[#c9a96e] focus:ring-[#c9a96e]" /> 
                       <span className="text-[#e8e3dc]">Public Event</span>
                     </label>
                   </div>
                   
                   <div className="flex items-center gap-3">
-                    <button type="button" onClick={closeEditModal} className="px-6 py-2.5 bg-[#1a1917] border border-white/[0.06] text-[#e8e3dc] rounded-lg font-semibold hover:bg-gray-800 transition-colors">
+                    <button type="button" onClick={closeEditModal} className="px-6 py-2.5 bg-[#1a1917] border border-white/[0.06] text-[#e8e3dc] rounded-lg font-semibold hover:bg-[#2a2927] transition-colors">
                       Cancel
                     </button>
-                    <button type="submit" disabled={loading} className="px-6 py-2.5 bg-blue-500 text-white rounded-lg font-bold hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    <button type="submit" disabled={loading} style={{ backgroundColor: '#c9a96e', color: '#111010' }} className="px-6 py-2.5 rounded-lg font-bold hover:brightness-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                       {loading ? 'Updating...' : 'Update Event'}
                     </button>
                   </div>
