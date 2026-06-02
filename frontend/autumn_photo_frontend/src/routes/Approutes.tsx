@@ -5,6 +5,7 @@ import RegisterPage from "../pages/auth/RegisterPage";
 import OTPVerifyPage from "../pages/auth/OtpVerifyPage";
 
 import EventsPage from "../pages/events/EventsPage";
+import GalleryPage from "../pages/gallery/GalleryPage";
 import DashboardPage from "../pages/dashboard/DashboardPage";
 import ProfilePage from "../pages/profile/profilepage";
 import AdminPanel from "../pages/admin/AdminPanel";
@@ -22,6 +23,7 @@ export default function AppRoutes() {
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/verify-otp" element={<OTPVerifyPage />} />
       <Route path="/events" element={<EventsPage />} />
+      <Route path="/gallery" element={<GalleryPage />} />
       <Route path="/omniport/callback" element={<OmniportCallbackPage />} />
       <Route element={<ProtectedRoute />}>
         <Route path="/photos/upload" element={<Navigate to="/photographer" replace />} />
