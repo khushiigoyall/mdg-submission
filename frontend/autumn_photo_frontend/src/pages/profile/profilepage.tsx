@@ -65,52 +65,86 @@ const ProfilePage = () => {
     }, []);
 
     return (
-        <div className="h-screen w-screen overflow-y-auto bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-white">
+        <div className="h-screen w-screen overflow-y-auto bg-[#111010] text-[#e8e3dc]">
             <Navbar />
-            <div className="px-6 md:px-10 lg:px-16 py-8 md:py-10">
-                <h1 className="text-3xl font-bold mb-4">Profile</h1>
-                <div className="mb-6 p-4 rounded-lg bg-gray-900/50 border border-gray-800">
-                    <div className="text-lg">Username: <span className="text-gray-300">{full_name|| 'Unknown'}</span></div>
-                    <div className="text-lg mt-2">Email: <span className="text-gray-300">{email || 'Unknown'}</span></div>
-                    <div className="text-lg mt-2">Role: <span className="text-gray-300">{role || localStorage.getItem('role') || 'USER'}</span></div>
+            <div className="relative z-10 px-6 md:px-10 lg:px-16 pt-[80px] pb-10 max-w-7xl mx-auto">
+                <div className="flex flex-col mb-12">
+                    <p className="text-[#7a7570] text-sm uppercase tracking-[0.08em] font-medium flex items-center gap-2 mb-2">
+                        <span className="w-6 h-[1px] bg-[#7a7570]"></span> ACCOUNT DETAILS
+                    </p>
+                    <h1 className="text-5xl md:text-6xl font-normal text-[#e8e3dc] mb-2" style={{ fontFamily: "'DM Serif Display', serif" }}>
+                        Profile
+                    </h1>
                 </div>
 
-                <section className="mb-8">
-                    <h2 className="text-xl font-semibold mb-3">Liked Photos</h2>
+                <div className="mb-12 p-8 rounded-xl bg-[#1a1917] border border-white/[0.06] flex flex-col md:flex-row md:items-center gap-8">
+                    <div className="h-24 w-24 rounded-full bg-[#111010] border border-white/[0.06] flex items-center justify-center text-3xl text-[#c9a96e] uppercase font-bold" style={{ fontFamily: "'DM Serif Display', serif" }}>
+                        {(full_name || email || 'U')[0]}
+                    </div>
+                    <div className="flex-1 space-y-2">
+                        <div className="text-sm text-[#7a7570] font-medium uppercase tracking-wider">Username</div>
+                        <div className="text-2xl text-[#e8e3dc] font-semibold">{full_name || 'Unknown'}</div>
+                    </div>
+                    <div className="flex-1 space-y-2">
+                        <div className="text-sm text-[#7a7570] font-medium uppercase tracking-wider">Email Address</div>
+                        <div className="text-lg text-[#e8e3dc]">{email || 'Unknown'}</div>
+                    </div>
+                    <div className="flex-1 space-y-2">
+                        <div className="text-sm text-[#7a7570] font-medium uppercase tracking-wider">Role</div>
+                        <div className="inline-block px-4 py-1.5 bg-[#111010] border border-[#c9a96e]/30 text-[#c9a96e] rounded-full text-sm font-semibold tracking-wide">
+                            {role || localStorage.getItem('role') || 'USER'}
+                        </div>
+                    </div>
+                </div>
+
+                <section className="mb-12">
+                    <h2 className="text-3xl font-normal mb-6 text-[#e8e3dc]" style={{ fontFamily: "'DM Serif Display', serif" }}>Liked Photos</h2>
                     {liked.length ? (
-                        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                             {liked.map((p: any) => (
-                                <img key={p.id} src={p.thumbnail_file?.startsWith('http') ? p.thumbnail_file : `http://127.0.0.1:8000${p.thumbnail_file}`} alt="thumb" className="w-full h-36 object-cover rounded" />
+                                <div key={p.id} className="group relative overflow-hidden rounded-xl aspect-[4/3] bg-[#1a1917] border border-white/[0.06]">
+                                    <img src={p.thumbnail_file?.startsWith('http') ? p.thumbnail_file : `http://127.0.0.1:8000${p.thumbnail_file}`} alt="Liked" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 group-hover:opacity-80" />
+                                </div>
                             ))}
                         </div>
                     ) : (
-                        <div className="text-gray-400">No liked photos (or endpoint not available).</div>
+                        <div className="p-12 text-center rounded-xl border border-dashed border-white/[0.1] text-[#7a7570]">
+                            No liked photos yet.
+                        </div>
                     )}
                 </section>
 
-                <section className="mb-8">
-                    <h2 className="text-xl font-semibold mb-3">Favourites</h2>
+                <section className="mb-12">
+                    <h2 className="text-3xl font-normal mb-6 text-[#e8e3dc]" style={{ fontFamily: "'DM Serif Display', serif" }}>Favourites</h2>
                     {favs.length ? (
-                        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                             {favs.map((p: any) => (
-                                <img key={p.id} src={p.thumbnail_file?.startsWith('http') ? p.thumbnail_file : `http://127.0.0.1:8000${p.thumbnail_file}`} alt="thumb" className="w-full h-36 object-cover rounded" />
+                                <div key={p.id} className="group relative overflow-hidden rounded-xl aspect-[4/3] bg-[#1a1917] border border-white/[0.06]">
+                                    <img src={p.thumbnail_file?.startsWith('http') ? p.thumbnail_file : `http://127.0.0.1:8000${p.thumbnail_file}`} alt="Favourite" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 group-hover:opacity-80" />
+                                </div>
                             ))}
                         </div>
                     ) : (
-                        <div className="text-gray-400">No favourites (or endpoint not available).</div>
+                        <div className="p-12 text-center rounded-xl border border-dashed border-white/[0.1] text-[#7a7570]">
+                            No favourites yet.
+                        </div>
                     )}
                 </section>
 
-                <section>
-                    <h2 className="text-xl font-semibold mb-3">Tagged In</h2>
+                <section className="mb-12">
+                    <h2 className="text-3xl font-normal mb-6 text-[#e8e3dc]" style={{ fontFamily: "'DM Serif Display', serif" }}>Tagged In</h2>
                     {tagged.length ? (
-                        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                             {tagged.map((p: any) => (
-                                <img key={p.id} src={p.thumbnail_file?.startsWith('http') ? p.thumbnail_file : `http://127.0.0.1:8000${p.thumbnail_file}`} alt="thumb" className="w-full h-36 object-cover rounded" />
+                                <div key={p.id} className="group relative overflow-hidden rounded-xl aspect-[4/3] bg-[#1a1917] border border-white/[0.06]">
+                                    <img src={p.thumbnail_file?.startsWith('http') ? p.thumbnail_file : `http://127.0.0.1:8000${p.thumbnail_file}`} alt="Tagged" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 group-hover:opacity-80" />
+                                </div>
                             ))}
                         </div>
                     ) : (
-                        <div className="text-gray-400">No tags (or endpoint not available).</div>
+                        <div className="p-12 text-center rounded-xl border border-dashed border-white/[0.1] text-[#7a7570]">
+                            You haven't been tagged in any photos yet.
+                        </div>
                     )}
                 </section>
             </div>
