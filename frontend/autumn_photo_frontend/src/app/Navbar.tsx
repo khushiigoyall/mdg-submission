@@ -37,7 +37,7 @@ export default function Navbar() {
   const roleVal = (role || '').toString().trim().toUpperCase();
 
   return (
-    <div className="w-full bg-[#111010] pt-4 px-4 md:px-8">
+    <div className="relative z-50 w-full bg-[#111010] pt-4 px-4 md:px-8">
       <nav className="w-full max-w-7xl mx-auto bg-[#0e0d0c] border-b border-white/[0.07] backdrop-blur-[8px] text-white px-6 py-4 flex items-center justify-between rounded-t-[16px]">
         <div className="flex items-center gap-4">
           <Link to="/events" className="text-2xl !text-[#e8e3dc] font-bold tracking-tight" style={{ fontFamily: "'DM Serif Display', serif" }}>Events</Link>
