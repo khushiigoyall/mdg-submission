@@ -23,7 +23,6 @@ A comprehensive web application for managing event photography with AI-powered p
 
 Glance is a full-stack event photography management platform. The platform enables seamless event creation, photo uploads, AI-powered tagging, person identification, and collaborative photo management with role-based permissions.
 
-**Live Demo**: [https://mail.google.com/mail/u/0/#search/img?projector=1](https://mail.google.com/mail/u/0/#search/img?projector=1)
 **Demo Video**: [Watch on YouTube](https://youtu.be/LPUiQArqcpo?si=ecZ0NWAIcCYsaOrz)
 
 ---
