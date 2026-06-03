@@ -24,42 +24,62 @@ A comprehensive web application for managing event photography with AI-powered p
 Autumn Photo is a full-stack event photography management platform designed for the Information Management Group (IMG). The platform enables seamless event creation, photo uploads, AI-powered tagging, person identification, and collaborative photo management with role-based permissions.
 
 **Live Demo**: [https://mail.google.com/mail/u/0/#search/img?projector=1](https://mail.google.com/mail/u/0/#search/img?projector=1)
+**Demo Video**: [Watch on YouTube](https://youtu.be/LPUiQArqcpo?si=FY82KNNBY78cXStF)
 
 ---
 
-## 📱 App Flow & Features
+## 📱 App Flow & Features (Step-by-Step)
 
-This section outlines the primary user journey through the application, explaining the features and aesthetics of each core page.
+Here is a clear, step-by-step walkthrough of the application's core functionality, featuring real screenshots of the platform.
 
-*(Note: Replace the placeholder image paths below with your actual screenshot files in a `screenshots/` folder).*
+### Step 1: Registration & Authentication
+New users can easily register for an account. After registration, they must securely verify their email via OTP.
+- **Register**: 
+  ![Register Page](./screenshots/register_page.png)
+- **OTP Verification**: 
+  ![OTP Verification](./screenshots/verification_otp.png)
+- **Login**: Users can log in using their credentials or via Omniport. 
+  ![Login Page](./screenshots/login_page.png)
 
-### 1. Authentication & Login
-![Login Page](./screenshots/login.png)
-- **Features**: Secure Omniport (Channeli) OAuth integration. Role-based redirection upon successful login (Admin, Photographer, Coordinator).
-- **Design**: Minimalist interface matching the platform's warm charcoal and antique gold theme.
-
-### 2. Events Discovery
+### Step 2: Discovering Events
+Once authenticated, users arrive at the **Events** page. This is the central hub to explore all upcoming and past events.
 ![Events Page](./screenshots/events.png)
-- **Features**: Browse all upcoming and past events. Features a powerful global search bar to instantly find events, photos, tags, or people. Event coordinators can edit events directly from this page.
-- **Design**: A beautiful masonry/asymmetric grid layout for featured events, elegant typography using *DM Serif Display*, and rich hover micro-interactions to create a premium, editorial feel.
 
-### 3. Event Details & Photo Gallery
-![Event Photos](./screenshots/event_details.png)
-- **Features**: Dynamic photo viewing modes (Grid, Masonry, and Carousel views) that users can toggle between. High-performance rendering of AI-tagged photos. Authorized photographers can perform bulk photo uploads directly to the event.
-- **Design**: Immersive full-screen photo viewing modals, smooth gradient backdrops, and interactive badging for tagged users.
+### Step 3: Viewing an Event & Photos
+Clicking on an event takes the user to the **Event Gallery**, where they can view all photos associated with that event in a beautiful masonry grid.
+![Event Gallery](./screenshots/event_gallery.png)
 
-### 4. Search & AI Person Identification
-![Search Features](./screenshots/search.png)
-- **Features**: Advanced search capabilities allow users to find photos by AI-generated tags (e.g., "crowd", "stage") or by searching for specific people tagged in the photos. Seamlessly handles complex cross-table database queries.
+Clicking on any photo opens the immersive **Photo Modal**, providing a high-resolution view where users can see AI tags, and can like or favorite the photo.
+![Photo Modal](./screenshots/photo_modal.png)
 
-### 5. Real-Time Notifications
-![Notifications](./screenshots/notifications.png)
-- **Features**: Live WebSocket-based notifications alert users instantly when they are tagged in a photo or when an event they are assigned to is updated. 
-- **Design**: An elegant dropdown menu accessible from the Navbar bell icon, which dynamically displays unread counts without requiring page reloads.
+### Step 4: Global Gallery & Powerful Search
+The **Global Gallery** aggregates all photos across all events in one seamless experience.
+![Gallery](./screenshots/gallery.png)
 
-### 6. Admin Panel & User Dashboards
-![Admin Dashboard](./screenshots/admin.png)
-- **Features**: Dedicated portals for Admins to manage user roles and permissions, create new events, and oversee the entire platform's activity. Coordinators and Photographers have custom dashboards to manage their specific assigned duties.
+Users can utilize the powerful **Search** functionality to instantly find photos by AI-generated tags (e.g., "crowd", "stage") or by specific people tagged in them.
+![Search](./screenshots/search.png)
+
+### Step 5: Real-Time Notifications
+Users receive instant WebSocket-based notifications when they are tagged in a photo or when event details change. The notification dropdown is elegantly paginated.
+![Notifications](./screenshots/notification_pagination.png)
+
+### Step 6: User Profile
+The **Profile Page** provides users with an elegant overview of their account details, along with quick access to their liked photos, favorited photos, and photos they have been tagged in.
+![Profile Page](./screenshots/profile_page.png)
+
+### Step 7: Photographer Dashboard
+Photographers have a dedicated **Photographer Dashboard** to easily manage their assignments and perform high-speed bulk photo uploads to specific events.
+![Photographer Dashboard](./screenshots/photographer_dashboard.png)
+
+### Step 8: Admin Panel & Event Management
+Administrators and Coordinators have access to the **Admin Panel** to manage the platform, user roles, and oversee all events.
+![Admin Panel](./screenshots/admin_panel1.png)
+
+From here, they can seamlessly create new events or edit existing ones.
+- **Create Event**: 
+  ![Create Event](./screenshots/admin_create_event.png)
+- **Edit Event**: 
+  ![Edit Event](./screenshots/edit_event.png)
 
 ---
 
