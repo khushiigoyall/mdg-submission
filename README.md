@@ -1,4 +1,4 @@
-# Autumn Photo - Event Photography Management Platform
+# Glance - Event Photography Management Platform
 
 A comprehensive web application for managing event photography with AI-powered photo tagging, real-time notifications, and role-based access control.
 
@@ -21,10 +21,10 @@ A comprehensive web application for managing event photography with AI-powered p
 
 ## 🎯 Overview
 
-Autumn Photo is a full-stack event photography management platform designed for the Information Management Group (IMG). The platform enables seamless event creation, photo uploads, AI-powered tagging, person identification, and collaborative photo management with role-based permissions.
+Glance is a full-stack event photography management platform. The platform enables seamless event creation, photo uploads, AI-powered tagging, person identification, and collaborative photo management with role-based permissions.
 
 **Live Demo**: [https://mail.google.com/mail/u/0/#search/img?projector=1](https://mail.google.com/mail/u/0/#search/img?projector=1)
-**Demo Video**: [Watch on YouTube](https://youtu.be/LPUiQArqcpo?si=FY82KNNBY78cXStF)
+**Demo Video**: [Watch on YouTube](https://youtu.be/LPUiQArqcpo?si=ecZ0NWAIcCYsaOrz)
 
 ---
 
@@ -298,7 +298,7 @@ django/
 | **ADMIN**             | Full access: manage users, all events, all photos  |
 | **EVENT_COORDINATOR** | Create events, edit assigned events, upload photos |
 | **PHOTOGRAPHER**      | Upload photos to assigned events                   |
-| **IMG_MEMBER**        | View all events, view all photos                   |
+| **MEMBER**            | View all events, view all photos                   |
 | **PUBLIC**            | View public events only                            |
 
 ---
@@ -322,4 +322,4 @@ django/
 ---
 
 ## 👨‍💻 Developer
-Developed as part of the IMG Autumn Assignment 2025/26
+Developed as part of the Autumn Assignment 2025/26
