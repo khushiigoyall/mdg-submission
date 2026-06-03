@@ -51,9 +51,7 @@ finally {
           className="relative z-10 w-full max-w-md p-8 space-y-6"
         >
           <div className="text-center">
-            <div className="w-16 h-16 bg-green-500 rounded-2xl flex items-center justify-center shadow-lg mx-auto mb-4">
-              <Sparkles size={30} className="text-white" />
-            </div>
+            <img src="/glance-logo.png" alt="Glance Logo" className="w-16 h-16 object-contain mx-auto mb-4 drop-shadow-lg rounded-2xl" />
 
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Create Account</h1>
             <p className="text-gray-500">Join the autumn photography community</p>

@@ -44,9 +44,7 @@ catch (err: any) {
 
         <div className="relative w-full max-w-md">
           <div className="text-center mb-8">
-            <div className="w-16 h-16 flex items-center justify-center rounded-2xl bg-green-500 shadow-xl mx-auto mb-6">
-              <Sparkles className="text-white w-8 h-8" />
-            </div>
+            <img src="/glance-logo.png" alt="Glance Logo" className="w-16 h-16 object-contain mx-auto mb-6 drop-shadow-xl rounded-2xl" />
             <h1 className="text-3xl font-bold text-gray-800">Welcome Back</h1>
             <p className="text-gray-500 text-sm">Login to continue</p>
           </div>

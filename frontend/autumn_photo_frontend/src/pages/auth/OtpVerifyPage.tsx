@@ -70,9 +70,7 @@ export default function VerifyOtpPage() {
 
         <div className="relative z-10 w-full max-w-md">
           <div className="text-center mb-6">
-            <div className="w-16 h-16 flex items-center justify-center rounded-2xl bg-green-500 shadow-xl mx-auto mb-4">
-              <Sparkles className="text-white w-8 h-8" />
-            </div>
+            <img src="/glance-logo.png" alt="Glance Logo" className="w-16 h-16 object-contain mx-auto mb-4 drop-shadow-xl rounded-2xl" />
             <h1 className="text-3xl font-bold text-gray-800">Verify your email</h1>
             <p className="text-gray-500 text-sm">
               Enter the 6-digit code sent to{" "}
