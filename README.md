@@ -318,7 +318,3 @@ django/
 4. Push to branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
----
-
-## 👨‍💻 Developer
-Developed as part of the Autumn Assignment 2025/26
